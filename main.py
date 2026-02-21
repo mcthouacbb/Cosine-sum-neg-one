@@ -3,6 +3,7 @@ from tabulate import tabulate
 from collections import defaultdict
 import sys
 import argparse
+from collections import Counter
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding='utf-8')
@@ -111,12 +112,15 @@ def output_table(terms: list[int]):
     headers = [f"${theta_n_str("n")}$"] if latex else [theta_n_str("n")]
     for subterms in split_2adic(terms):
         cos_str = ""
-        for subterm in subterms:
+        subterm_multiset = Counter(subterms)
+        for subterm, count in subterm_multiset.items():
             if not len(cos_str) == 0:
                 cos_str += " + "
             if subterm == 1:
                 subterm = ""
-            cos_str += f"cos({subterm}{theta_n_str("")})"
+            if count == 1:
+                count = ""
+            cos_str += f"{count}cos({subterm}{theta_n_str("")})"
         if cos_str == "":
             cos_str = " "
         if latex:
