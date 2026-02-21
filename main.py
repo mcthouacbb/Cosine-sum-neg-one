@@ -4,7 +4,8 @@ from collections import defaultdict
 import sys
 import argparse
 
-sys.stdout.reconfigure(encoding='utf-8')
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding='utf-8')
 
 latex = True
 
@@ -130,6 +131,13 @@ def output_table(terms: list[int]):
     else:
         print(tabulate(data, headers=headers, tablefmt="grid"))
 
+def sanitize(terms: list[int]):
+    for term in terms:
+        if term <= 0:
+            print(f"A value of {term} is not allowed! Please only pass positive integers.")
+            sys.exit(1)
+
+
 parser = argparse.ArgumentParser(description="Computing sum cosine(kx) <= -1")
 parser.add_argument("-n", "--numbers", nargs="+", type=int, required=True, help="The list of integers")
 parser.add_argument("-l", "--latex", action="store_true", help="Enable latex output")
@@ -137,5 +145,7 @@ parser.add_argument("-l", "--latex", action="store_true", help="Enable latex out
 args = parser.parse_args()
 
 latex = args.latex
+
+sanitize(args.numbers)
 
 output_table(args.numbers)
