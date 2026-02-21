@@ -57,6 +57,11 @@ def pi_str(num: int, denom: int) -> str:
     gcd = math.gcd(num, denom)
     num //= gcd
     denom //= gcd
+    if num == 1 and denom == 1:
+        if latex:
+            return f"\\pi"
+        return "pi"
+
     if latex:
         return f"\\frac{{{num}}}{{{denom}}}\\pi"
     return f"{num}/{denom} * pi"
