@@ -2,9 +2,9 @@ import math
 from tabulate import tabulate
 from collections import defaultdict
 import sys
-sys.stdout.reconfigure(encoding='utf-8')
+import argparse
 
-terms = [5, 2, 6, 4, 12, 8, 40, 16, 64]
+sys.stdout.reconfigure(encoding='utf-8')
 
 latex = True
 
@@ -108,6 +108,8 @@ def output_table(terms: list[int]):
         for subterm in subterms:
             if not len(cos_str) == 0:
                 cos_str += " + "
+            if subterm == 1:
+                subterm = ""
             cos_str += f"cos({subterm}{theta_n_str("")})"
         if cos_str == "":
             cos_str = " "
@@ -119,33 +121,16 @@ def output_table(terms: list[int]):
     data = compute_output_table(terms)
 
     if latex:
-        print("\\renewcommand{\\arraystretch}{1.5}\n" + tabulate(data, headers=headers, tablefmt="latex_raw"))
+        print(tabulate(data, headers=headers, tablefmt="latex_raw"))
     else:
         print(tabulate(data, headers=headers, tablefmt="grid"))
 
+parser = argparse.ArgumentParser(description="Computing sum cosine(kx) <= -1")
+parser.add_argument("-n", "--numbers", nargs="+", type=int, required=True, help="The list of integers")
+parser.add_argument("-l", "--latex", action="store_true", help="Enable latex output")
 
-"""output_table([
-    1, 1/2,
-    1/4, 3/4,
-    1/8, 7/8,
-    3/8, 5/8,
-    1/16, 15/16,
-    3/16, 13/16,
-    5/16, 11/16,
-    7/16, 9/16
-])"""
+args = parser.parse_args()
 
-# g_n = split_2adic(terms)
-# print(split_2adic(terms))
-# print(compute_theta_n(g_n))
-# print(compute_output_table(terms))
-# output_table([
-#     "1/64",
-#     "1/64",
-#     "3/64",
-#     "5/64",
-#     "5/64",
-#     "27/64",
-#     "37/64",
-# ])
-output_table(terms)
+latex = args.latex
+
+output_table(args.numbers)
