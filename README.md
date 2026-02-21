@@ -11,5 +11,5 @@ However, it is quite tricky to show this is the case. This repository contains a
 Python 3 and pip are required. The tabulate package is required in order to format the output.
 Run `pip install -r requirements.txt` to install all dependencies
 
-Run `python main.py --numbers <space-separated integers here>` in order to print human readable table of the result.
+Run `python main.py --numbers <space-separated integers here>` in order to print human readable table of the result. If you pass too many numbers or too large of a number, the table may overflow your terminal output and look messy. You can either copy the result into a file and look at it in a text editor, or use the latex output and paste that into a latex viewer.
 Run `python main.py --numbers <numbers> --latex` in order to print a latex formatted table of the result.
